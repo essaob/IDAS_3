@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+<div class="header-top-content">
+
+
+</div>
+
+<div class="row justify-content-between">
+  <form class="col text-center" action="{% url 'userPortfolio' %}" method="POST">
+  {% csrf_token %}
+  <button class="page-btn" type="submit">Projects</button>
+</form>
+
+ 
+
+<form class="col text-center" action="{% url 'userSettings' %}" method="GET">
+  {% csrf_token %}
+  <button class="page-btn" type="submit">User settings</button>
+</form>
+</div>
+{% endblock %}

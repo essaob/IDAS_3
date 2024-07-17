@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %}
+<div class="header-top-content">
+  <h1 class="h1-responsive font-weight-bold">Projects</h1>
+
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2>{{ user.username }} has written {{ projects.count }} project{{ project.count|pluralize }}</h2>
+    <p><a href="{% url 'createPortfolio' %}">create project</a></p>
+  </div>
+</div>
+{% if projects %}
+<div class="cards p-0">
+  <h4 class="mb-2">Projects list:</h4>
+  {% for project in projects %}
+     <div class="card" style="width: 18rem">
+       <img class="card-img-top" src="{{ project.image.url }}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="{% url 'detailp' project.id %}"><h2>{{ project.title }}</h2></a>
+        </h5>
+        <p class="card-text">{{ project.description }}</p>
+        {% if project.url %}
+          <p class="card-text"><br /><a href="{{ project.url }}">Link</a></p>
+        {% endif %} 
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %} {% endblock %}

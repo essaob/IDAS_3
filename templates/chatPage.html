@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Chat Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0; /* Remove default margin */
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 800px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+
+    .chat-message {
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      max-width: 75%;
+    }
+
+    .chat-message.user {
+      background-color: #d4edda;
+      align-self: flex-end;
+    }
+
+    .chat-message.api {
+      background-color: #f8d7da;
+      align-self: flex-start;
+    }
+
+    .input-group {
+      display: flex;
+      border-radius: 5px;
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+    }
+
+    .input-group button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    .input-group button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-box" id="chatBox">
+    <!-- Example User Message -->
+    <div class="chat-message user">Hi chat bot</div>
+  </div>
+  <div class="input-group">
+    <input type="text" id="chatInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  async function sendMessageToAPI(message) {
+    const apiKey = 'sk-proj-2zw1OCBT7OebjdhSV1yvT3BlbkFJ2a4gp8LOMnSHiEvepquq'; // Your provided OpenAI API key
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [{ role: 'user', content: message }]
+        })
+      });
+
+      const data = await response.json();
+      if (data.choices && data.choices.length > 0) {
+        return data.choices[0].message.content;
+      } else {
+        console.error('Unexpected API response format:', data);
+        return 'Sorry, I did not understand that.';
+      }
+    } catch (error) {
+      console.error('Error while communicating with the API:', error);
+      return 'Sorry, an error occurred while processing your request.';
+    }
+  }
+
+  function appendMessage(message, sender) {
+    const chatBox = document.getElementById('chatBox');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'chat-message ' + sender;
+    messageDiv.textContent = message;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll to bottom
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (message) {
+      appendMessage(message, 'user');
+      input.value = '';
+
+      // Send message to ChatGPT API and get response
+      const response = await sendMessageToAPI(message);
+      appendMessage(response, 'api');
+    }
+  }
+</script>
+
+</body>
+</html>
+
+{% endblock %}
