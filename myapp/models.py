@@ -7,11 +7,46 @@ from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,User
 
+
+
+
+
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()
+class MyModel(models.Model):
+    image = models.ImageField(upload_to='images/')
 # class CustomUser(AbstractUser):
 #     is_investor = models.BooleanField(default=False)
 #     mailing_address = models.CharField(max_length=200, blank=True)
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_patient = models.BooleanField(default=False)
+    is_doctor = models.BooleanField(default=False)
+    bio = models.TextField(blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    dob = models.DateField(null=True, blank=True, default=now)
+    profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    education = models.TextField(blank=True, null=True)
+    roomchat = models.CharField(max_length=255, blank=True, null=True)
+    def _str_(self):
+        return f"{self.user.username}'s profile"
 
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_patient = models.BooleanField(default=False)
+    is_doctor = models.BooleanField(default=False)
+    bio = models.TextField(blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    dob = models.DateField(null=True, blank=True, default=now)
+    profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    education = models.TextField(blank=True, null=True)
+    roomchat = models.CharField(max_length=255, blank=True, null=True)
+    def _str_(self):
+        return f"{self.user.username}'s profile"
 
 class User(AbstractBaseUser):
     INVESTOR = 1

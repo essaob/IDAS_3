@@ -44,7 +44,35 @@ def home(request):
 def personalArea(request):
     return render(request, 'personalArea.html')
 
+def editprofile(request):
+    profile = request.user.userprofile
 
+    if request.method == 'POST':
+
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'editprofile.html', {'form': form})
+
+
+def profile(request):
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'profile.html', {'form': form, 'profile': profile})
 @login_required
 def logoutuser(request):
     if request.method == 'POST':
