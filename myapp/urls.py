@@ -29,7 +29,6 @@ urlpatterns = [
 
  # app blog
 
- # comments
 
  # search
  # scholarship

@@ -10,7 +10,7 @@ from django.contrib.auth.models import AbstractBaseUser,User
 # class CustomUser(AbstractUser):
 #     is_investor = models.BooleanField(default=False)
 #     mailing_address = models.CharField(max_length=200, blank=True)
-#
+
 
 
 class User(AbstractBaseUser):
@@ -30,7 +30,7 @@ class ContactUsModel(models.Model):
     subject = models.CharField(max_length=100)
     message = models.TextField(max_length=500)
 
-    def __str__(self):  # func to see email inthe tasks list
+    def __str__(self):
         return self.email
 
 
@@ -56,15 +56,12 @@ class Project(models.Model):
     image = models.ImageField(upload_to='portfolio/images/')
     url = models.URLField(blank=True)
     # user = models.ForeignKey(CustomUser,
-    #                          on_delete=models.CASCADE)  # key that connect user and project that he created (import: from django.contrib.auth.models import User)
+    #               on_delete=models.CASCADE)  # key that connect user and project that he created (import: from django.contrib.auth.models import User)
 
     def delete(self, *args, **kwargs):
-        # You have to prepare what you need before delete the model
         storage, path = self.image.storage, self.image.path
-        # Delete the model before the file
         super(Project, self).delete(*args, **kwargs)
-        # Delete the file after the model
         storage.delete(path)
 
-    def __str__(self):  # func to see tittle name in the tasks list
+    def __str__(self):
         return self.title

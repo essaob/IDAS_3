@@ -28,7 +28,6 @@ class UserAuthTests(TestCase):
         self.assertTemplateUsed(response, 'login.html')
 
     def test_login_form(self):
-        # Create a user
         user = User.objects.create_user(username='testuser', password='testpassword123')
         response = self.client.post(reverse('login'), {
             'username': 'testuser',

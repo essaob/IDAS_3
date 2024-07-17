@@ -46,10 +46,10 @@ def personalArea(request):
 
 
 @login_required
-def logoutuser(request):  # p
-    if request.method == 'POST':  # method post!!!
+def logoutuser(request):
+    if request.method == 'POST':
         logout(request)
-        return redirect('chatPage')  # return home page after logout
+        return redirect('chatPage')
 
 
 @login_required

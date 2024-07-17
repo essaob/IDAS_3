@@ -34,13 +34,19 @@ class PortfolioForm(ModelForm):
 
 class CustomLoginForm(AuthenticationForm):
     pass
-
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
 
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio', 'location', 'dob', 'profile_image', 'education','roomchat']
+        widgets = {
+            'dob': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 # class RegisterUserForm(UserCreationForm):
 #     email = forms.EmailField()
