@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+        nav ul li a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+        nav ul li a:hover,
+        nav ul li a.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-control, .form-control-file {
+            border-radius: 0;
+        }
+        .btn-primary {
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <nav class="mb-4">
+        <ul>
+            <li><a href="{% url 'home' %}" class="active">Home</a></li>
+          <li><a href="{% url 'about' %}" class="active">About</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'register_patient' %}">SignUp As Patient</a></li>
+                <li><a href="{% url 'register_doctor' %}">SignUp As Doctor</a></li>
+                <li><a href="{% url 'patient_login' %}">Login As Patient</a></li>
+                <li><a href="{% url 'doctor_login' %}">Login As Doctor</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <h2>Edit Profile</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="bio">Bio:</label>
+            <textarea name="bio" id="bio" class="form-control" rows="3">{{ form.bio.value }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" name="location" id="location" class="form-control" value="{{ form.location.value }}">
+        </div>
+        <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" name="dob" id="dob" class="form-control" value="{{ form.dob.value|date:"Y-m-d" }}">
+        </div>
+        <div class="form-group">
+            <label for="profile_image">Profile Image:</label>
+            <input type="file" name="profile_image" id="profile_image" class="form-control-file">
+        </div>
+        <div class="form-group">
+            <label for="education">Education:</label>
+            <textarea name="education" id="education" class="form-control" rows="3">{{ form.education.value }}</textarea>
+        </div>
+            {% if user.profile.is_doctor %}
+<div class="form-group">
+    <label for="roomchat">Room:</label>
+    <textarea name="roomchat" id="roomchat" class="form-control">{{ form.roomchat.value }}</textarea>
+</div>
+{% endif %}
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}
