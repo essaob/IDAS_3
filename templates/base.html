@@ -7,47 +7,139 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      padding-top: 70px; /* Adjust padding for fixed navbar */
+    }
+
+    .navbar-inverse {
+      background-color: #222;
+      border-color: #080808;
+      border-radius: 0; /* Remove border radius */
+      margin-bottom: 0; /* Remove margin bottom */
+    }
+
+    .navbar-inverse .navbar-brand {
+      color: #0f0;
+    }
+
+    .navbar-inverse .navbar-brand:hover,
+    .navbar-inverse .navbar-brand:focus {
+      color: #45a049;
+    }
+
+    .navbar-inverse .navbar-nav > li > a {
+      color: #ddd;
+    }
+
+    .navbar-inverse .navbar-nav > li > a:hover,
+    .navbar-inverse .navbar-nav > li > a:focus {
+      color: #fff;
+      background-color: transparent;
+    }
+
+    .navbar-inverse .navbar-nav .dropdown-menu {
+      background-color: #333;
+      border-color: #222;
+    }
+
+    .navbar-inverse .navbar-nav .dropdown-menu > li > a {
+      color: #ddd;
+    }
+
+    .navbar-inverse .navbar-nav .dropdown-menu > li > a:hover,
+    .navbar-inverse .navbar-nav .dropdown-menu > li > a:focus {
+      color: #fff;
+      background-color: #444;
+    }
+
+    .navbar-inverse .navbar-nav > .dropdown > a .caret {
+      border-top-color: #ddd;
+      border-bottom-color: #ddd;
+    }
+
+    .navbar-inverse .navbar-nav > .dropdown > a:hover .caret,
+    .navbar-inverse .navbar-nav > .dropdown > a:focus .caret {
+      border-top-color: #fff;
+      border-bottom-color: #fff;
+    }
+
+    .navbar-inverse .navbar-nav > .active > a,
+    .navbar-inverse .navbar-nav > .active > a:hover,
+    .navbar-inverse .navbar-nav > .active > a:focus {
+      color: #fff;
+      background-color: #080808;
+    }
+
+    .navbar-inverse .navbar-toggle {
+      border-color: #333;
+    }
+
+    .navbar-inverse .navbar-toggle .icon-bar {
+      background-color: #fff;
+    }
+
+    .navbar-inverse .navbar-right > li > a {
+      color: #ddd;
+    }
+
+    .navbar-inverse .navbar-right > li > a:hover,
+    .navbar-inverse .navbar-right > li > a:focus {
+      color: #fff;
+      background-color: transparent;
+    }
+
+    .navbar-inverse .navbar-right > li > .glyphicon {
+      margin-right: 5px;
+    }
+
+    .btn-nav {
+      margin-top: 10px;
+      margin-right: 15px;
+    }
+  </style>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
-    <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{% url 'chatPage' %}">Chat Bot</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
 
+      <a class="navbar-brand" href="{% url 'chatPage' %}">ConversAI</a>
+      <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        {% if user.is_authenticated %}
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">History <span class="caret"></span></a>
-
           <ul class="dropdown-menu">
-            <li><a href="{% url 'personalArea' %} ">personalArea</a></li>
-            <li><a href="{% url 'contactus' %}">contactus</a></li>
-{#            <li><a href="{% url '#' %}">setting</a></li>#}
+            <li><a href="#">Empty</a></li>
           </ul>
         </li>
-
+        {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-
-           <li><a href="{% url 'contactus' %}"><span class="glyphicon glyphicon-user"></span> ContactUs</a></li>
-        <li><a href="{% url 'signupuser' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href=" {% url 'loginuser' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'profile' %}" class="btn btn-nav"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+        <li><a href="{% url 'logoutuser' %}" class="btn btn-nav"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'contactus' %}" class="btn btn-nav"><span class="glyphicon glyphicon-envelope"></span> Contact Us</a></li>
+        <li><a href="{% url 'signupuser' %}" class="btn btn-nav"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="{% url 'loginuser' %}" class="btn btn-nav"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>
 </nav>
 
+{% block content %}
+{% endblock %}
 
 </body>
 </html>
-
-{% block content %}
-
-{% endblock %}

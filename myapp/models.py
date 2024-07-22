@@ -1,70 +1,34 @@
-
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.forms import UserCreationForm
 from django.db import models
-from django.test import TestCase
-from django.contrib.auth.models import AbstractUser
-from django.urls import reverse
-from django.db import models
-from django.contrib.auth.models import AbstractBaseUser,User
-
-# class CustomUser(AbstractUser):
-#     is_investor = models.BooleanField(default=False)
-#     mailing_address = models.CharField(max_length=200, blank=True)
-#
+from django.contrib.auth.models import User
 
 
-class User(AbstractBaseUser):
-    INVESTOR = 1
-    ADMIN = 2
-    ROLE_CHOICES = (
-        (INVESTOR, 'Investor'),
-        (ADMIN, 'Admin')
-    )
-
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=False, null=False)
 
 
-class ContactUsModel(models.Model):
+class Contactus(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    subject = models.CharField(max_length=100)
-    message = models.TextField(max_length=500)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
 
-    def __str__(self):  # func to see email inthe tasks list
-        return self.email
+    def __str__(self):
+        return self.name
+
+#
+#
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     bio = models.TextField(max_length=500, blank=True)
+#     location = models.CharField(max_length=30, blank=True)
+#     birth_date = models.DateField(null=True, blank=True)
+#
+#     def __str__(self):
+#         return self.user.username
 
 
-class ContactAdmin(models.Model):
-    subject = models.CharField(max_length=100)
-    message = models.TextField(max_length=500)
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
 
-    def __str__(self):  # func to see email inthe tasks list
-        return self.subject
-
-
-
-# class CustomUser(AbstractUser):
-#     is_student = models.BooleanField(default=False)
-#     is_investor = models.BooleanField(default=False)
-#     mailing_address = models.CharField(max_length=200, blank=True)
-#     college = models.CharField(max_length=30)
-#     major = models.CharField(max_length=30)
-
-class Project(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='portfolio/images/')
-    url = models.URLField(blank=True)
-    # user = models.ForeignKey(CustomUser,
-    #                          on_delete=models.CASCADE)  # key that connect user and project that he created (import: from django.contrib.auth.models import User)
-
-    def delete(self, *args, **kwargs):
-        # You have to prepare what you need before delete the model
-        storage, path = self.image.storage, self.image.path
-        # Delete the model before the file
-        super(Project, self).delete(*args, **kwargs)
-        # Delete the file after the model
-        storage.delete(path)
-
-    def __str__(self):  # func to see tittle name in the tasks list
-        return self.title
+    def __str__(self):
+        return self.user.username

@@ -1,53 +1,45 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from myapp.models import  ContactUsModel ,ContactAdmin,Project
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import AbstractBaseUser,User
 
-
-class ContactUsForm(forms.ModelForm):
-    class Meta:
-        model = ContactUsModel
-        fields = ["name", "email", "subject", "message"]
-
-class ContactAdminForm(forms.ModelForm):
-    class Meta:
-        model = ContactAdmin
-        fields = ["subject", "message"]
+from myapp.models import Contactus, Profile
 
 
-#
-class UserSetting(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
-        # widgets={
-        # 'password1':TextInput(attrs={'type':'password'})
-        # }
-
-
-class PortfolioForm(ModelForm):
-    class Meta:
-        model = Project
-        fields = ['title', 'description', 'image', 'url']
-
-
-class CustomLoginForm(AuthenticationForm):
-    pass
-
-class CustomUserCreationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
-
-
-
-# class RegisterUserForm(UserCreationForm):
-#     email = forms.EmailField()
-#     first_name = forms.CharField(max_length=50)
-#     last_name = forms.CharField(max_length=50)
+# class SignUpForm(UserCreationForm):
+#     email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
 #
 #     class Meta:
-#         model = CustomUser
-#
-#         fields = ('username', 'first_name', 'last_name', 'email',  'password1', 'password2')
+#         model = User
+#         fields = ('username', 'email', 'password1', 'password2')
+
+
+class ContactusForm(forms.ModelForm):
+    class Meta:
+        model = Contactus
+        fields = ['name', 'email', 'subject', 'message']
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio']
+
+
+
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(
+        max_length=254,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'})
+    )

@@ -12,33 +12,31 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0; /* Remove default margin */
+      background-color: #000; /* Changed background color to match the style */
+      margin: 0;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
     }
 
     .chat-container {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      margin: 20px auto;
       width: 80%;
       max-width: 800px;
-      background-color: white;
+      background-color: #222; /* Dark background color for chat container */
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       padding: 20px;
     }
 
     .chat-box {
-      flex: 1;
+      height: 400px; /* Fixed height for chat box */
       overflow-y: auto;
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #333;
       margin-bottom: 10px;
       border-radius: 5px;
+      background-color: #333; /* Dark background for chat box */
     }
 
     .chat-message {
@@ -49,12 +47,14 @@
     }
 
     .chat-message.user {
-      background-color: #d4edda;
+      background-color: #0f0; /* Green background for user message */
+      color: #000;
       align-self: flex-end;
     }
 
     .chat-message.api {
-      background-color: #f8d7da;
+      background-color: #f8d7da; /* Light red background for API message */
+      color: #000;
       align-self: flex-start;
     }
 
@@ -66,16 +66,18 @@
     .input-group input {
       flex: 1;
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #333;
       border-radius: 5px 0 0 5px;
       outline: none;
+      background-color: #333;
+      color: #fff;
     }
 
     .input-group button {
       padding: 10px 20px;
-      background-color: #4CAF50;
+      background-color: #0f0; /* Green background for button */
       border: none;
-      color: white;
+      color: #000;
       border-radius: 0 5px 5px 0;
       cursor: pointer;
     }
@@ -90,7 +92,9 @@
 <div class="chat-container">
   <div class="chat-box" id="chatBox">
     <!-- Example User Message -->
-    <div class="chat-message user">Hi chat bot</div>
+{#    <div class="chat-message user">Hi chat bot</div>#}
+    <!-- Example Chatbot Response -->
+    <div class="chat-message api">Hi, I'm a chatbot. How can I help you?</div>
   </div>
   <div class="input-group">
     <input type="text" id="chatInput" placeholder="Type a message...">
